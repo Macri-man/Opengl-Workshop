@@ -54,7 +54,7 @@ void setupGL(){
       
       
     
-    //glUseProgram(program);
+    glUseProgram(program);
       
     glm::mat4 mainProjMatrix;
     //mainProjMatrix = glm::ortho(-45.0,45.0,-45.0,45.0,-20.0,5000.0);
@@ -164,7 +164,7 @@ glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLineWidth(5);
     //render all our geometry
     for(int x=0;x<geoms.size();x++)
-    geoms.at(x)->render(outlineProg,GL_LINE_LOOP);
+    geoms.at(x)->render(outlineProg,GL_LINE_STRIP);
     
     for(int x=0;x<geoms.size();x++)
     geoms.at(x)->render(program,GL_QUADS);
