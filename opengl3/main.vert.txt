@@ -1,0 +1,21 @@
+#version 130
+
+uniform mat4 Matrix;
+uniform mat4 viewMatrix;
+uniform mat4 modelMatrix;
+  
+in vec3 in_Position;
+in vec4 in_Color;
+in vec2 in_Tex;
+
+out vec2 pass_Tex;
+out vec4 pass_Color;
+
+void main(void)
+{
+
+gl_Position = Matrix * viewMatrix * modelMatrix * vec4(in_Position, 1.0); 
+
+pass_Color=in_Color;
+pass_Tex=in_Tex;
+}
