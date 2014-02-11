@@ -1,4 +1,4 @@
 Opengl-Workshop
 ===============
 
-Austin Lundar Code
+Austin Lundar's Code
