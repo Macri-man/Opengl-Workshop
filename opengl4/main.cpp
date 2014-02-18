@@ -14,6 +14,7 @@ vector<Geometry*> geoms;
 
 float yaw,pit;
 glm::vec3 playerPos;
+glm::vec3 light;
 
 void setupGL(){
     glClearColor(.2, .3, .4, 0);
@@ -33,7 +34,7 @@ void setupGL(){
 	glBindAttribLocation(program, 0, "in_Position");
       glBindAttribLocation(program, 1, "in_Color");
       glBindAttribLocation(program, 2, "in_Tex");
-      glBindAttribLocation(program, 3, "in_Norms");
+      glBindAttribLocation(program, 3, "in_Norm");
 
       glLinkProgram(program);
       printLog(program);
@@ -49,7 +50,6 @@ void setupGL(){
 	glBindAttribLocation(outlineProg, 0, "in_Position");
       glBindAttribLocation(outlineProg, 1, "in_Color");
       glBindAttribLocation(outlineProg, 2, "in_Tex");
-      //glBindAttribLocation(outlineProg, 3, "in_Tex");
 
       glLinkProgram(outlineProg);
       printLog(outlineProg);
@@ -157,7 +157,11 @@ glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glUniformMatrix4fv(tempLoc, 1, GL_FALSE, &temp[0][0]);
     
     tempLoc = glGetUniformLocation(program, "light");
-    glUniform3f(tempLoc,playerPos.x,playerPos.y,playerPos.z);
+    glUniform3f(tempLoc, light.x,light.y,light.z);
+
+     
+    tempLoc = glGetUniformLocation(program, "viewer");
+    glUniform3f(tempLoc, playerPos.x,playerPos.y,playerPos.z);
     
     glUseProgram(outlineProg);
     
@@ -169,7 +173,10 @@ glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     tempLoc = glGetUniformLocation(program, "time");
     glUniform1i(tempLoc, count);
     
-    glLineWidth(8);
+    temp=glm::rotate(glm::mat4(),.1f,glm::vec3(0,0,1));
+    light=glm::vec3(temp*glm::vec4(light,1));
+    
+    glLineWidth(5);
     
     //render all our geometry
     for(int x=0;x<geoms.size();x++)
@@ -212,11 +219,12 @@ if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     }
     
     setupGL();
+    light=glm::vec3(0,-100,30);
     //setup geometry
-    geoms.push_back(new CubeVAO(1000,10,1000,glm::vec3(0,-50,0)));
-    geoms.push_back(new CubeVAO(50,50,10,glm::vec3(-100,0,0)));
-    geoms.push_back(new CubeVAO(10,10,10,glm::vec3(100,70,-100)));
-    geoms.push_back(new CubeVAO(100,10,500,glm::vec3(200,50,-100)));
+    geoms.push_back(new CCubeVAO(1000,10,1000,glm::vec3(0,-50,0)));
+    geoms.push_back(new CCubeVAO(50,50,10,glm::vec3(-100,0,0)));
+    geoms.push_back(new CCubeVAO(10,10,10,glm::vec3(100,70,-100)));
+    geoms.push_back(new CCubeVAO(100,10,500,glm::vec3(200,50,-100)));
     geoms.push_back(new ImageVAO(tex));
     yaw=0;
     pit=0;
