@@ -1,0 +1,12 @@
+README
+
+notes this requires 3 libraries to be installed
+SDL2, GLEW, GLM
+or
+libsdl2-dev
+libglew-dev
+libglm-dev
+
+it can be compiled with the command
+g++ main.cpp -lSDL2 -lGLU -lGL -lGLEW
+

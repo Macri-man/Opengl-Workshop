@@ -1,0 +1,24 @@
+#version 130
+
+uniform int time;
+uniform sampler2D Sam;
+uniform vec4 lens;
+
+in vec2 pass_Tex;
+
+out vec4 out_Color;
+vec2 barrel(vec2 inn){
+
+float rsq=inn.x*inn.x+inn.y*inn.y;
+vec2 outer=inn*(lens.x+lens.y*rsq+lens.z+rsq*rsq+lens.w*rsq*rsq*rsq);
+return (outer*.5+.5);
+}
+
+void main(void)
+{
+vec2 temp=barrel((pass_Tex-.5)*2);
+if(temp.x>0&&temp.x<1&&temp.y>0&&temp.y<1)
+out_Color=texture(Sam,temp);
+else
+out_Color=vec4(0,0,0,0);
+}

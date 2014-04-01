@@ -1,0 +1,20 @@
+#version 130
+
+uniform mat4 Matrix;
+  
+in vec3 in_Position;
+
+in vec2 in_Tex;
+out vec2 pass_Tex;
+
+
+void main(void)
+{
+vec4 temp;
+temp = Matrix * vec4(in_Position, 1.0); 
+temp.z+=.015;
+
+gl_Position=temp;
+
+pass_Tex=in_Tex;
+}
